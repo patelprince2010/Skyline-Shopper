@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="website icon" type="png " href="images/logo2 - Copy.png">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo2.png" width="300px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <!-- <li><a href="account.html">Account</a></li> -->
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+
+    <main>
+        <section class="about-us">
+            <h1>About Us</h1>
+            <p>Welcome to <strong>Skyline Shopper</strong>! We're here to make your online shopping fast, easy, and fun. Whether you're looking for the latest gadgets, trendy fashion, home essentials, or unique gifts, we’ve got it all in one place.</p>
+            <br>
+            <p>We work hard to bring you a huge selection of products, great deals, and a smooth shopping experience. From everyday basics to special treats, Skyline Shopper is your go-to destination.</p>
+            <br>
+           
+            
+            <p>We’re all about giving you the best shopping experience possible. Thank you for choosing Skyline Shopper—we’re so happy to have you with us.</p> <br>
+
+            <p><strong>Happy shopping!</strong></p>
+        </section>
+    </main>
+    
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App For Android and Ios Mobile Phone.</p>
+                    <div class="app-logo">
+                        <a href="https://play.google.com/store" target="_blank">
+                            <img src="images/play-store.png">
+                        </a>
+                        <a href="https://www.apple.com/app-store/" target="_blank">
+                            <img src="images/app-store.png" alt="App Store">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="images/logo3white.png">
+                    <p>Our Purpose is to sustainably Make the pleasure and benifits of sports accessible to the many.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="">Coupons</a></li>
+                        <li><a href="">Blog Post</a></li>
+                        <li><a href="">Return Policy</a></li>
+                        <li><a href="">Join Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/patel_pujan_18/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    function menutoggle() {
+        let menu = document.getElementById('MenuItems');
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+});
+
+function menutoggle() {
+            let menu = document.getElementById('MenuItems');
+            menu.classList.toggle('show'); // Toggle the 'show' class
+        }
+        document.addEventListener("contextmenu", function (event) {
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+});
+    </script>
+</body>
+</html>

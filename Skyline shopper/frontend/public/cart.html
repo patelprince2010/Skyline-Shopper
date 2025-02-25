@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products | Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="website icon" type="png " href="images/logo2 - Copy.png">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo2.png" width="300px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="account.html">Account</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+
+    <!-- Cart item details -->
+    <div class="small-container cart-page">
+        <table id="cart-table">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+            </tr>
+            <!-- Cart items will be dynamically inserted here -->
+        </table>
+
+        <div class="coupon-section">
+            <input type="text" id="coupon-code" class="coupon-input" placeholder="Enter Coupon Code"><br>
+            <button id="coupon-button" class="coupon-button" onclick="applyCoupon()">Apply Coupon</button>
+            <button id="remove-coupon-button" class="coupon-button" style="display: none;" onclick="removeCoupon()">Remove Coupon</button>
+            <p id="coupon-message" class="coupon-message-success" style="display: none;">Coupon applied successfully! <b>You got 50% Off</b></p>
+            <p id="invalid-coupon-message" class="coupon-message-error" style="display: none;">Invalid coupon code!</p>
+        </div>
+        
+        
+
+        <div class="total-price">
+            <table>
+                <tr>
+                    <td>Sub Total</td>
+                    <td id="subtotal-amount">₹0</td>
+                </tr>
+                <tr>
+                    <td>Tax (18%)</td>
+                    <td id="tax-amount">₹0</td>
+                </tr>
+                <tr>
+                    <td>Discount</td>
+                    <td id="discount-amount">₹0</td>
+                </tr>
+                <tr>
+                    <td>Grand Total</td>
+                    <td id="total-amount">₹0</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Checkout Button Container -->
+        <div class="checkout-button-container">
+           <a href="checkout.html"> <button class="checkout-button">Checkout</button></a>
+        </div>
+
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App For Android and iOS Mobile Phones.</p>
+                    <div class="app-logo">
+                        <a href="https://play.google.com/store" target="_blank">
+                            <img src="images/play-store.png">
+                        </a>
+                        <a href="https://www.apple.com/app-store/" target="_blank">
+                            <img src="images/app-store.png" alt="App Store">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="images/logo3white.png">
+                    <p>Our Purpose is to sustainably make the pleasure and benefits of sports accessible to the many.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="">Coupons</a></li>
+                        <li><a href="">Blog Post</a></li>
+                        <li><a href="">Return Policy</a></li>
+                        <li><a href="">Join Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/patel_pujan_18/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+        </div>
+    </div>
+
+
+
+    <script>
+
+let couponApplied = false;
+
+document.addEventListener("DOMContentLoaded", function () {
+    function menutoggle() {
+        let menu = document.getElementById('MenuItems');
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+});
+
+function menutoggle() {
+            let menu = document.getElementById('MenuItems');
+            menu.classList.toggle('show'); // Toggle the 'show' class
+        }
+
+function updateTotal() {
+    const rows = document.querySelectorAll("#cart-table tr");
+    let subtotalAmount = 0;
+
+    rows.forEach((row, index) => {
+        if (index === 0) return; // Skip the header row
+
+        const quantityInput = row.querySelector("input[type='number']");
+        const priceText = row.querySelector(".cart-info small")?.textContent;
+
+        if (!priceText || !quantityInput) return; // Skip if price or quantity input is missing
+
+        const price = parseFloat(priceText.replace("Price: ₹", "").trim());
+        const quantity = parseInt(quantityInput.value);
+        const subtotalCell = row.querySelector(".subtotal");
+
+        if (!isNaN(price) && !isNaN(quantity)) {
+            const rowSubtotal = price * quantity;
+            subtotalCell.textContent = `₹${rowSubtotal.toFixed(2)}`;
+            subtotalAmount += rowSubtotal;
+        }
+    });
+
+    const tax = subtotalAmount * 0.18; // 18% tax
+    let discount = 0;
+
+    if (couponApplied) {
+        discount = subtotalAmount * 0.5; // 50% discount for PATEL50
+    }
+
+    const total = subtotalAmount + tax - discount;
+
+    document.getElementById("subtotal-amount").textContent = `₹${subtotalAmount.toFixed(2)}`;
+    document.getElementById("tax-amount").textContent = `₹${tax.toFixed(2)}`;
+    document.getElementById("discount-amount").textContent = `₹${discount.toFixed(2)}`;
+    document.getElementById("total-amount").textContent = `₹${total.toFixed(2)}`;
+
+    localStorage.setItem("discount", discount.toFixed(2));
+    localStorage.setItem("grandTotal", total.toFixed(2));
+}
+
+function loadCartItems() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartTable = document.getElementById("cart-table");
+    cart.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>
+                <div class="cart-info">
+                    <img src="${item.image}" width="50" height="50" alt="${item.name}">
+                    <div>
+                        <p>${item.name}</p>
+                        <small>Price: ₹${item.price}</small><br>
+                        <a href="#" onclick="removeFromCart('${item.name}')">Remove</a>
+                    </div>
+                </div>
+            </td>
+            <td><input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(this, '${item.name}', ${item.price})"></td>
+            <td class="subtotal">₹${(item.price * item.quantity).toFixed(2)}</td>
+        `;
+        cartTable.appendChild(row);
+    });
+
+    updateTotal();
+}
+
+function updateQuantity(input, productName, productPrice) {
+    if (parseInt(input.value) < 1 || isNaN(input.value)) {
+        input.value = 1;
+    }
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const productIndex = cart.findIndex(item => item.name === productName);
+    if (productIndex > -1) {
+        cart[productIndex].quantity = parseInt(input.value);
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    updateTotal();
+}
+
+function removeFromCart(productName) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(item => item.name !== productName);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    location.reload();
+}
+
+function applyCoupon() {
+    const couponCode = document.getElementById("coupon-code").value.trim().toUpperCase();
+    const couponMessage = document.getElementById("coupon-message");
+    const invalidCouponMessage = document.getElementById("invalid-coupon-message");
+    const removeCouponButton = document.getElementById("remove-coupon-button");
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (couponCode === "PATEL50") {
+        couponApplied = true;
+        localStorage.setItem("couponCode", "PATEL50");
+        couponMessage.style.display = "block";
+        invalidCouponMessage.style.display = "none";
+        removeCouponButton.style.display = "inline-block"; // Show the Remove Coupon button
+        updateTotal();
+    } else if (couponCode === "EXCLUSIVE") {
+        let shoeFound = false;
+
+        cart.forEach((item) => {
+            if (item.category && item.category.toLowerCase() === "shoes") {
+                shoeFound = true;
+                item.price = 10; // Update price of shoes to ₹10
+            }
+        });
+
+        if (shoeFound) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            couponMessage.style.display = "block";
+            invalidCouponMessage.style.display = "none";
+            removeCouponButton.style.display = "inline-block"; // Show the Remove Coupon button
+            alert("Coupon applied! All shoes are now ₹10.");
+            loadCartItems();
+        } else {
+            alert("No shoes found in the cart to apply the EXCLUSIVE coupon.");
+            invalidCouponMessage.style.display = "block";
+            couponMessage.style.display = "none";
+        }
+    } else {
+        couponApplied = false;
+        localStorage.removeItem("couponCode");
+        couponMessage.style.display = "none";
+        invalidCouponMessage.style.display = "block";
+        removeCouponButton.style.display = "none"; // Hide the Remove Coupon button
+    }
+}
+
+function removeCoupon() {
+    couponApplied = false;
+    localStorage.removeItem("couponCode");
+
+    document.getElementById("coupon-code").value = ""; // Clear the coupon input field
+    document.getElementById("coupon-message").style.display = "none"; // Hide the success message
+    document.getElementById("invalid-coupon-message").style.display = "none"; // Hide the error message
+    document.getElementById("remove-coupon-button").style.display = "none"; // Hide the Remove Coupon button
+
+    updateTotal(); // Recalculate totals without the coupon
+}
+
+function checkout() {
+    window.location.href = "checkout.html";
+}
+
+document.addEventListener("DOMContentLoaded", loadCartItems);
+
+document.addEventListener("contextmenu", function (event) {
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+});
+
+</script>
+
+</body>
+</html>

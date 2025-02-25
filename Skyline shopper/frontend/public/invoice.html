@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice | Skyline Shopper</title>
+
+  <!-- External Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    /* Reset & Global Styles */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; color: #444; overflow-x: hidden; }
+
+    /* Layout */
+    .container { display: flex; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar { width: 240px; background-color: #2c3e50; color: #ecf0f1; flex-shrink: 0; display: flex; flex-direction: column; padding: 20px; }
+    .sidebar-header { margin-bottom: 40px; }
+    .sidebar-header img { width: 190px; }
+    .sidebar-nav ul { list-style: none; padding: 0; }
+    .sidebar-nav ul li { margin-bottom: 20px; }
+    .sidebar-nav ul li a { color: #ecf0f1; font-size: 16px; text-decoration: none; transition: color 0.3s ease; }
+    .sidebar-nav ul li a:hover { color: #bdc3c7; }
+
+    /* Main Content */
+    .main-content { flex: 1; display: flex; flex-direction: column; }
+
+    /* Top Header */
+    .top-header { background-color: #fff; border-bottom: 1px solid #ddd; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+    .top-header h1 { font-size: 28px; color: #2c3e50; font-family: 'Times New Roman', Times, serif; }
+    .profile { display: flex; align-items: center; }
+    .profile span { margin-right: 10px; font-size: 16px; color: #2c3e50; }
+    .profile img { width: 40px; height: 40px; border-radius: 50%; }
+
+    /* Content */
+    .content { padding: 30px; overflow-y: auto; }
+    .table-header { font-size: 22px; font-weight: bold; margin-bottom: 20px; color: #34495e; text-transform: uppercase; }
+
+    /* Table */
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+    th { background-color: #2c3e50; color: white; }
+    button { background-color: #27ae60; color: white; border: none; padding: 8px 12px; cursor: pointer; border-radius: 5px; }
+    button:hover { background-color: #219150; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { flex-direction: column; }
+      .sidebar { width: 100%; }
+      .top-header { flex-direction: column; text-align: center; }
+      .profile { margin-top: 10px; }
+    }
+
+    .invoice-btn {
+    background: linear-gradient(135deg, #ff7e5f, #ff3f34); /* Fiery Orange Gradient */
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(255, 63, 52, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.invoice-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.4s ease-in-out;
+}
+
+.invoice-btn:hover::before {
+    left: 100%;
+}
+
+.invoice-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(255, 63, 52, 0.4);
+}
+
+.invoice-btn span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo3white.png" alt="Skyline Shopper Logo" />
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="admin-panel.html">Admin Panel</a></li>
+          <li><a href="admin-dashboard.html">Dashboard</a></li>
+          <!-- <li><a href="#">Orders</a></li>
+          <li><a href="#">Products</a></li>
+          <li><a href="#">Customers</a></li> -->
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-header">
+        <h1>Invoice | Skyline Shopper</h1>
+        <div class="profile">
+          <span>Welcome, <b>Patel Prince</b></span>
+          <img src="images/prince.jpg" alt="Profile Picture" id="profile-img" />
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="table-header">All Orders - Invoice Generator</div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>User ID</th>
+              <th>Total Amount</th>
+              <th>Payment Method</th>
+              <th>Order Date</th>
+              <th>Status</th>
+              <th>Invoice</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTable"></tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+
+
+
+  <script>
+    async function downloadInvoice(orderID, userID, totalAmount, paymentMethod, orderDate, orderStatus, productsJson) {
+        console.log("🔹 Generating invoice for Order ID:", orderID);
+
+        try {
+            if (!window.jspdf) {
+                throw new Error("jsPDF library is not loaded!");
+            }
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // ✅ Convert images to Base64 before adding them
+            const logoBase64 = await getBase64Image("https://i.imgur.com/211cbL7.jpg"); // Replace with actual logo URL
+            const signatureBase64 = await getBase64Image("images/signkp.png");
+
+            // ✅ Add company logo
+            if (logoBase64) {
+                doc.addImage(logoBase64, "PNG", 80, 10, 50, 20);
+            }
+
+            // ✅ Company Header
+            doc.setFont("times", "normal");
+            doc.setFontSize(22);
+            doc.text("Skyline Shopper Pvt Ltd.", 105, 35, { align: "center" });
+
+            doc.setFontSize(12);
+            doc.text("Near CH-'0' Circle Yagnik marg, Gandhinagar - 382007, Gujarat, India", 105, 45, { align: "center" });
+            doc.text("Email: support@skylineshopper.com | Phone: +91 6359700326", 105, 55, { align: "center" });
+
+            // ✅ Order Details
+            doc.setFontSize(14);
+            doc.text(`Invoice ID: INV-${orderID}`, 20, 70);
+            doc.text(`Order ID: ${orderID}`, 20, 80);
+            doc.text(`User ID: ${userID}`, 20, 90);
+            doc.text(`Order Date: ${new Date(orderDate).toLocaleDateString()}`, 20, 100);
+            doc.text(`Payment Method: ${paymentMethod}`, 20, 110);
+            doc.text(`Order Status: ${orderStatus}`, 20, 120);
+
+            // ✅ Parse Products JSON
+            let products;
+            try {
+                const decodedJson = decodeURIComponent(productsJson);
+                products = JSON.parse(decodedJson);
+                if (!Array.isArray(products) || products.length === 0) {
+                    throw new Error("No products found.");
+                }
+            } catch (err) {
+                console.error("❌ Error parsing products JSON:", err);
+                alert("Invalid product data. Cannot generate invoice.");
+                return;
+            }
+
+            // ✅ Product Table
+            doc.autoTable({
+                startY: 130,
+                head: [["Product Name", "Quantity", "Price", "Total"]],
+                body: products.map(product => [
+                    product.name || "N/A",
+                    product.quantity.toString(),
+                    `${parseFloat(product.price).toFixed(2)}`,
+                    `${parseFloat(product.quantity * product.price).toFixed(2)}`
+                ]),
+                theme: 'striped',
+                headStyles: { fillColor: [44, 62, 80], halign: 'center' },
+                bodyStyles: { fontSize: 10 },
+                columnStyles: {
+                    0: { cellWidth: 70 },
+                    1: { cellWidth: 20, halign: "center" },
+                    2: { cellWidth: 40, halign: "center" },
+                    3: { cellWidth: 40, halign: "center" } // Total Column
+                }
+            });
+
+            // ✅ Position Grand Total below table
+            const finalY = doc.lastAutoTable.finalY + 10;
+            const totalColumnX = 140;
+
+            // Draw Grand Total Text
+            doc.text(`Grand Total: ${parseFloat(totalAmount).toFixed(2)}`, totalColumnX, finalY);
+
+            // ✅ Add Owner's Signature Below Grand Total
+            if (signatureBase64) {
+                doc.addImage(signatureBase64, "PNG", 140, finalY + 10, 50, 15);
+            }
+
+            // ✅ Authorized Signature Line
+            doc.line(140, finalY + 30, 190, finalY + 30);
+            doc.text("Authorized Signature", 150, finalY + 40);
+
+            // ✅ Get page height
+            const pageHeight = doc.internal.pageSize.height;
+
+            // ✅ Position footer text at the bottom
+            doc.setFontSize(12);
+            doc.text("Thank you for shopping with us!", 105, pageHeight - 20, { align: "center" });
+
+            // ✅ Save PDF
+            console.log("🔹 Downloading invoice...");
+            doc.save(`Invoice ${orderID}.pdf`);
+        } catch (err) {
+            console.error("❌ Invoice download failed:", err);
+            alert("Error downloading invoice. Please try again.");
+        }
+    }
+
+    // ✅ Function to Convert Image URL to Base64
+    async function getBase64Image(url) {
+        try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+        } catch (error) {
+            console.error("❌ Error loading image:", error);
+            return null;
+        }
+    }
+
+    async function fetchOrders() {
+        try {
+            const response = await fetch('http://localhost:3000/getOrders');
+            const data = await response.json();
+            
+            console.log("🔹 API Response:", data); // Debugging
+
+            if (data.success && Array.isArray(data.orders)) {
+                renderOrders(data.orders);
+            } else {
+                console.error("❌ No orders found!");
+                alert("No orders available.");
+            }
+        } catch (error) {
+            console.error("❌ Error fetching orders:", error);
+            alert("Error fetching orders: " + error.message);
+        }
+    }
+
+    function renderOrders(orders) {
+        const ordersTable = document.getElementById("ordersTable");
+        ordersTable.innerHTML = ""; // Clear existing data
+
+        orders.forEach(order => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${order.orderID}</td>
+                <td>${order.userID}</td>
+                <td>₹${order.totalAmount}</td>
+                <td>${order.paymentMethod}</td>
+                <td>${new Date(order.orderDate).toLocaleDateString()}</td>
+                <td>${order.orderStatus}</td>
+                <td>
+                    <button class="invoice-btn" 
+                        onclick="downloadInvoice('${order.orderID}', '${order.userID}', '${order.totalAmount}', '${order.paymentMethod}', '${order.orderDate}', '${order.orderStatus}', '${encodeURIComponent(JSON.stringify(order.items))}')">
+                        <i class="fas fa-file-download"></i> Download Invoice
+                    </button>
+                </td>
+
+            `;
+            ordersTable.appendChild(row);
+        });
+
+        console.log("✅ Orders rendered successfully!");
+    }
+
+    // Call function when page loads
+    fetchOrders();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order History | Skyline Shopper</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="website icon" type="png" href="images/logo2 - Copy.png">
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <script src="order-updates.js" defer></script>
+  <style>
+    .status {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    .status.ordered { background-color: #f4c542; color: black; }
+    .status.processing { background-color: #3498db; color: white; }
+    .status.shipped { background-color: #f39c12; color: white; }
+    .status.delivered { background-color: #2ecc71; color: white; }
+    .status.cancelled { background-color: #e74c3c; color: white; }
+  </style>
+</head>
+<body>
+  <div class="logo">
+    <a href="index.html"><img src="images/logo2.png" width="300px"></a>
+  </div>
+  <div class="order-history-page">
+    <h1>Order History</h1><br><br>
+    <div id="order-history-container">
+      <p>Loading order history...</p>
+    </div>
+  </div>
+  
+  <script>
+    async function fetchOrders() {
+      try {
+        const response = await fetch('http://localhost:3000/getOrders');
+        const data = await response.json();
+        const ordersContainer = document.getElementById('order-history-container');
+        ordersContainer.innerHTML = "";
+        
+        if (data.success && data.orders.length > 0) {
+          data.orders.forEach(order => {
+            const formattedDate = new Date(order.orderDate).toLocaleString();
+
+            const itemsHTML = order.items.map(item =>
+              `<div class="order-item">
+                <img src="${item.image}" alt="${item.name}" width="50" style="margin-right: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                <p>${item.name} - ${item.quantity} x ₹${item.price}</p>
+              </div>`).join('');
+
+            const orderHTML = `
+              <div class="order-card" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 10px;">
+                <h3>Order ID: ${order.orderID}</h3>
+                <h4>Order Date: ${formattedDate}</h4>
+                ${itemsHTML}
+                <h4>Total Amount: ₹${order.totalAmount}</h4>
+                <p>Payment Method: ${order.paymentMethod}</p>
+                <p>Status: <span class="status ${order.orderStatus.toLowerCase()}">${order.orderStatus}</span></p>
+              </div>
+            `;
+
+            ordersContainer.innerHTML += orderHTML;
+          });
+        } else {
+          ordersContainer.innerHTML = "<p>No orders found.</p>";
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+        document.getElementById('order-history-container').innerHTML = "<p>Error loading orders.</p>";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", fetchOrders);
+  </script>
+</body>
+</html>

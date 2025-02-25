@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Skyline Shopper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(to right, #e3f2fd, #ffffff);
+            text-align: center;
+        }
+        .logo {
+            margin-top: 20px;
+        }
+        .logo img {
+            width: 200px; /* Adjusted for mobile */
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80vh;
+        }
+        .image-container {
+            width: 55%;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+        }
+        .form-container {
+            width: 40%;
+            background: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .login-btn {
+            background: #ff523b;
+            color: white;
+            padding: 12px 20px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: 0.3s;
+        }
+        .login-btn:hover {
+            background: #f75e4c;
+        }
+
+        /* 🔹 Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                justify-content: center;
+                height: auto;
+                padding: 20px 0;
+            }
+            .image-container {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+            .logo img {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Website Logo -->
+    <div class="logo">
+        <a href="index.html"><img src="images/logo2.png" alt="Skyline Shopper"></a>
+    </div>
+
+    <div class="container">
+        <!-- Image Section -->
+        <div class="image-container">
+            <img src="images/image1.png" alt="Shopping Illustration">
+        </div>
+
+        <!-- Login Selection -->
+        <div class="form-container">
+            <h1>Select Login Type</h1>
+            <button class="login-btn" onclick="checkPassword('admin')">Admin</button>
+            <button class="login-btn" onclick="checkPassword('user')">User</button>
+        </div>
+    </div>
+
+    <script>
+        function checkPassword(role) {
+            let password = prompt("Enter Password:");
+
+            if ((role === "admin" && password === "kp@admin") || 
+                (role === "user" && password === "kp@user")) {
+                alert("Login successful!");
+                window.location.href = role === "admin" ? "admin-panel.html" : "login.html";
+            } else {
+                alert("Incorrect password. Try again.");
+            }
+        }
+    </script>
+
+</body>
+</html>

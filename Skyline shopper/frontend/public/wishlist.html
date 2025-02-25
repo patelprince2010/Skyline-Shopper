@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist | Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* Add padding from left side */
+        .wishlist-container {
+            padding-left: 10px;
+        }
+
+        /* Center the "YOUR WISHLIST" heading */
+        .wishlist-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Flexbox layout for wishlist items */
+        .wishlist-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: flex-start;
+        }
+
+        /* Styling for each wishlist item */
+        .wishlist-item {
+            padding: 10px;
+            /* border: 1px solid #333; */
+            border-radius: 5px;
+            text-align: center;
+            background-color: #fff;
+            flex: 1 1 250px; /* Allow flex grow, shrink, and set a base width */
+            box-sizing: border-box; /* Ensure padding is included in the width */
+            margin-bottom: 20px;
+        }
+
+        .wishlist-item img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            padding: 10px;
+        }
+
+        .wishlist-item h4 {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        .wishlist-item p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .wishlist-item button {
+            background-color: #ff532b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin: 5px 0;
+        }
+
+        .wishlist-item .add-to-cart-btn {
+            background-color: #4CAF50;
+        }
+
+        @media (max-width: 768px) {
+            /* Adjust layout for smaller screens */
+            .wishlist-item {
+                flex: 1 1 45%; /* Allow items to take up 45% of the container on small screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Adjust layout for very small screens */
+            .wishlist-item {
+                flex: 1 1 100%; /* Stack items vertically on very small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo2.png" width="300px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="wishlist.html">Wishlist</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="account.html">Account</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+
+    <div class="small-container wishlist-container">
+        <h2>Your Wishlist </h2>
+         <div class="wishlist-items" id="wishlistItems"></div> 
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App For Android and Ios Mobile Phone.</p>
+                    <div class="app-logo">
+                        <a href="https://play.google.com/store" target="_blank">
+                            <img src="images/play-store.png">
+                        </a>
+                        <a href="https://www.apple.com/app-store/" target="_blank">
+                            <img src="images/app-store.png" alt="App Store">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="images/logo3white.png">
+                    <p>Our Purpose is to sustainably Make the pleasure and benefits of sports accessible to the many.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li>Coupons</li>
+                        <li>Blog Post</li>
+                        <li>Return Policy</li>
+                        <li>Join Affiliate</li>
+                    </ul>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/_prince_ptl__/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to load wishlist items from localStorage
+        function loadWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishlistContainer = document.getElementById('wishlistItems');
+
+            wishlistContainer.innerHTML = '';
+
+            if (wishlist.length === 0) {
+                wishlistContainer.innerHTML = '<p>Your wishlist is empty.</p>';
+                return;
+            }
+
+            wishlist.forEach(item => {
+                const productCard = document.createElement('div');
+                productCard.className = 'wishlist-item';
+
+                productCard.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" style="width: 100%; max-width: 150px; height: auto; padding: 10px;">
+                    <h4>${item.name}</h4>
+                    <p>₹${item.price}</p>
+                    <button onclick="removeFromWishlist('${item.name}')">Remove</button>
+                    <button onclick="addToCartFromWishlist('${item.name}', ${item.price}, '${item.category}', '${item.image}')" class="add-to-cart-btn">Add to Cart</button>
+                `;
+
+                wishlistContainer.appendChild(productCard);
+            });
+        }
+
+        // Function to add an item to the wishlist
+        function addToWishlist(productName, productPrice, productImage) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            // Check if the product already exists in the wishlist
+            const productIndex = wishlist.findIndex(item => item.name === productName);
+
+            if (productIndex === -1) {
+                // Add the product to the wishlist if it doesn't already exist
+                wishlist.push({
+                    name: productName,
+                    price: productPrice,
+                    image: productImage
+                });
+
+                localStorage.setItem('wishlist', JSON.stringify(wishlist));
+                alert(`${productName} has been added to your wishlist!`);
+            } else {
+                alert(`${productName} is already in your wishlist.`);
+            }
+        }
+
+        // Function to remove an item from the wishlist
+        function removeFromWishlist(productName) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            // Filter out the product from the wishlist
+            wishlist = wishlist.filter(item => item.name !== productName);
+
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            alert(`${productName} has been removed from your wishlist!`);
+
+            // Reload the wishlist to reflect changes
+            loadWishlist();
+        }
+
+       
+        function addToCartFromWishlist(productName, productPrice, category, productImage) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Check if the product is already in the cart
+    const productIndex = cart.findIndex(item => item.name === productName);
+
+    if (productIndex === -1) {
+      
+        cart.push({
+            name: productName,
+            price: productPrice,
+            category: category,
+            image: productImage,
+            quantity: 1 // Set initial quantity to 1
+        });
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`${productName} has been added to your cart!`);
+    } else {
+        // If the product already exists in the cart, just update the quantity
+        cart[productIndex].quantity += 1;
+        localStorage.setItem('cart', JSON.stringify(cart));
+        alert(`${productName} quantity has been updated in your cart!`);
+    }
+}
+
+
+        document.addEventListener('DOMContentLoaded', loadWishlist);
+        // Load wishlist items on page load
+        window.onload = loadWishlist;
+
+        document.addEventListener("contextmenu", function (event) {
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+});
+    </script>
+</body>
+</html>

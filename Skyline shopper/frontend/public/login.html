@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="website icon" type="png " href="images/logo2 - Copy.png">
+</head>
+<body>
+<div class="header">
+
+
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="login.html"><img src="images/logo2.png" width="300px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <!-- <li><a href="index.html">Home</a></li> -->
+                    <!-- <li><a href="products.html">Products</a></li> -->
+                     
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="order-history.html">Orders</a></li>
+                    <!-- <li><a href="account.html">Account</a></li> -->
+                    <li><a href="order-tracking.html">Track</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <h1>Give Your Workout<br>A New Style!</h1>
+                <p>Success isn't always about greatness.It's about consistency.Consistent<br>hard work gains success.Greatness will come.</p>
+                <a href="products.html" class="btn">Explore more Products &#8594;</a>
+            </div>
+            <div class="col-2">
+                <img src="images/image1.png" >
+            </div>
+        </div>
+    </div>
+</div>
+<div class="categories">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <a href="product-2.html"><img src="images/poster-1.png"></a>
+            </div>
+            <div class="col-3">
+                <a href="product-14.html"><img src="images/poster-2.png"></a>
+            </div>
+            <div class="col-3">
+                <a href="product-7.html"><img src="images/poster-3.png"></a>
+            </div>
+        </div>
+    </div>
+
+</div>
+    <div class="small-container">
+        <h2 class="title">Featured Products</h2>
+        <div class="row">
+            <div class="col-4">
+                <a href="product-details.html"><img src="images/product-1.png"></a> 
+                <a href="product-details.html"><h4>Nike Revolution Running Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>₹3699</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Revolution Running Shoes',3699,'images/product-1.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-2.html"><img src="images/product-2.png"></a>
+                <a href="product-2.html"><h4>Nike Air Max Men Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹7999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Air Max Men Shoes',7999,'images/product-2.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-3.html"><img src="images/product-3.png"></a>
+                <a href="product-3.html"><h4>Nike Air Max Alpha Workout Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹7399</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Air Max Alpha Workout Shoes',7399,'images/product-3.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-4.html"><img src="images/product-4.png"></a>
+                <a href="product-4.html"><h4>Nike Juniper Trail 3 Running Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>₹7499</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Juniper Trail 3 Running Shoes', 7499,'images/product-4.png')">Add to Cart</button>
+            </div>
+        </div>
+
+
+        <h2 class="title">Latest Products</h2>
+        <div class="row">
+            <div class="col-4">
+                <a href="product-5.html"><img src="images/product-5.png"></a>
+                <a href="product-5.html"><h4>Nike MEN CITY 'Coveralls' Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>₹8699</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike MEN CITY Coveralls Shoes', 8699,'images/product-5.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-6.html"><img src="images/product-6.png"></a>
+                <a href="product-6.html"><h4>Nike Promina Men's Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹4999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Promina Mens Shoes', 4999,'images/product-6.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-7.html"><img src="images/product-7.png"></a>
+                <a href="product-7.html"><h4>Nike Pegasus 41 Blueprint Road Running Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹11999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Pegasus 41 Blueprint Road Running Shoes', 11999,'images/product-7.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-10.html"><img src="images/product-10.png"></a>
+                <a href="product-10.html"><h4>Nike Air Max Nuaxis Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹8999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Air Max Nuaxis Shoes', 8999,'images/product-10.png')">Add to Cart</button>
+            </div>
+        </div>
+        
+    </div>
+    <div class="offer">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="images/exclusive-1.png" class="offer-img">
+                </div>
+                <div class="col-2">
+                    <p>Exclusively Available on Skyline Shopper</p>
+                    <h1>Dior x Air Jordan 1 Retro High</h1>
+                    <small>One of the most highly anticipated launches of the year. The Dior x Air Jordan 1 High sneakers are the first collaboration between the luxury powerhouse and sneaker giant. Crafted from wolf grey and sail white leather, these Air Jordan 1 High sneakers take on the iconic high-top silhouette, and update it by way of a grey Dior monogram swoosh logo. The perfect balance between classic and high-style.</small><br>
+
+                    <a href="product-13.html" class="btn">Buy Now &#8594;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="offer">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="images/LVex.png" class="offer-img">
+                </div>
+                <div class="col-2">
+                    <p>Exclusively Available on Skyline Shopper</p>
+                    <h1>Nike x Louis Vuitton Air Force 1 Mid "Virgil Abloh - Graffiti" sneakers</h1>
+                    <small>The Louis Vuitton x Nike Air Force 1 Mid "Graffiti" features a leather upper with a beige and brown checkerboard pattern. Its design stands out thanks to the multicoloured graffiti on the quarter panel - a work of the artist Ghusto Leone. This high-top sneaker is secured by a side touch strap at the ankle and is finished by a cream rubber sole. </small><br>
+                    <a href="product-14.html" class="btn">Buy Now &#8594;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="testimonial">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>The Skyline Shopper website provides a smooth and enjoyable shopping experience. The design is sleek and modern, making it easy to find and explore different shoes. Product images are high-quality, and the size options are clear. Overall, it’s a reliable and convenient site for buying shoes online.</p>
+                    <div class="rating">
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star-half-o" ></i>
+                    </div>
+                    <a href="https://www.linkedin.com/in/kavar-prince-472bb0350/" target="_blank">
+                        <img class="prince" src="images/prince.jpg">
+                    </a>
+                    <h3>Kavar Prince</h3>
+                </div>
+                <div class="col-3">
+                    <i class="fa fa-quote-left"></i>
+                    <p>
+                        Skyline Shopper’s shoe website is easy to use with a clean design and works well on phones. Product pages are detailed with good images and size options. The checkout is simple, but adding more payment choices and features like a wish list or reviews would improve it. Overall, it offers a smooth and secure shopping experience.</p>
+                    <div class="rating">
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star" ></i>
+                        <i class="fa fa-star-half-o" ></i>
+                    </div>
+                    <img class="prince" src="images/pujan1.png" >
+                    <h3>Pujan Patel</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="brands">
+        <div class="small-container">
+            <div class="row">
+                <div class="col-5">
+                    <img src="images/nike-removebg-preview.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/adidas-removebg-preview.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/puma-removebg-preview.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/Jordan-removebg-preview.png">
+                </div>
+                <div class="col-5">
+                    <img src="images/diorb-removebg-preview.png">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="container">
+            <!-- <p class="moving-text">website Under Process</p> -->
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App For Android and Ios Mobile Phone.</p>
+                    <div class="app-logo">
+                        <a href="https://play.google.com/store" target="_blank">
+                            <img src="images/play-store.png">
+                        </a>
+                        <a href="https://www.apple.com/app-store/" target="_blank">
+                            <img src="images/app-store.png" alt="App Store">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="images/logo3white.png">
+                    <p>Our Purpose is to sustainably Make the pleasure and benifits of sports accessible to the many.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="">Coupons</a></li>
+                        <li><a href="">Blog Post</a></li>
+                        <li><a href="">Return Policy</a></li>
+                        <li><a href="">Join Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/_prince_ptl__/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="moving-text">Website is Under Process</p>
+            <hr>
+            <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+        </div>
+    </div>
+ 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    function menutoggle() {
+        let menu = document.getElementById('MenuItems');
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+});
+
+function menutoggle() {
+            let menu = document.getElementById('MenuItems');
+            menu.classList.toggle('show'); // Toggle the 'show' class
+        }
+
+        function addToCart(productName, price, imageUrl) {
+                // Check if cart exists in localStorage
+                let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                // Find if the product is already in the cart
+                let existingProduct = cart.find(item => item.name === productName);
+
+                if (existingProduct) {
+                    // If it exists, increase the quantity
+                    existingProduct.quantity += 1;
+                    
+                } else {
+                    // Add a new product to the cart
+                    cart.push({
+                        name: productName,
+                        price: price,
+                        image: imageUrl,
+                        quantity: 1,
+                    });
+                }
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                // Display a success message
+                alert(`${productName} has been added to your cart!`);
+            }
+
+            document.addEventListener("contextmenu", function (event) {
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+});
+    </script>
+</body>
+</html>

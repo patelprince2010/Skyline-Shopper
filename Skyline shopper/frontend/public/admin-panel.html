@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | Manage Orders</title>
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+      /* Reset & Global Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #eef1f7;
+    color: #444;
+    overflow-x: hidden;
+  }
+  a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease-in-out;
+  }
+  a:hover {
+    color: #3498db;
+  }
+
+  /* Container Layout */
+  .container {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar Styles */
+  .sidebar {
+    width: 260px;
+    background: linear-gradient(135deg, #2c3e50, #1c2833);
+    color: #ecf0f1;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .sidebar-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  .sidebar-header img {
+    width: 200px;
+    margin-right: 10px;
+  }
+  .sidebar-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .sidebar-nav ul {
+    list-style: none;
+  }
+  .sidebar-nav ul li {
+    margin-bottom: 20px;
+  }
+  .sidebar-nav ul li a {
+    color: #ecf0f1;
+    font-size: 16px;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+  }
+  .sidebar-nav ul li a:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Main Content Styles */
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Top Header */
+  .top-header {
+    background: #ffffff;
+    border-bottom: 2px solid #ddd;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+  }
+  .top-header h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  .profile {
+    display: flex;
+    align-items: center;
+  }
+  .profile span {
+    margin-right: 10px;
+    font-size: 16px;
+    color: #2c3e50;
+  }
+  .profile img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Content Area */
+  .content {
+    padding: 30px;
+    overflow-y: auto;
+  }
+  .table-header {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #34495e;
+    text-transform: uppercase;
+  }
+
+  /* Order Cards */
+  .order-card {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 5px solid #2ecc71;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+  }
+  .order-details {
+    flex: 1;
+  }
+  .order-details h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+    font-weight: 600;
+  }
+  .order-details p {
+    margin-bottom: 5px;
+  }
+
+  /* Order Status and Controls */
+  .order-status-container {
+    text-align: right;
+  }
+  .order-status-container .status {
+    display: inline-block;
+    font-weight: bold;
+    padding: 8px 14px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease-in-out;
+  }
+  .status:hover {
+    transform: scale(1.1);
+  }
+
+  .status.Ordered { background: linear-gradient(135deg, #1e90ff, #00c3ff); color: white; }
+.status.Processing { background: linear-gradient(135deg, #2ecc71, #00ff7f); color: white; }
+.status.Shipped { background: linear-gradient(135deg, #ffd700, #ff8c00); color: white; }
+.status.Out-For-Delivery { background: linear-gradient(135deg, #ff4500, #ff1493); color: white; }
+.status.Delivered { background: linear-gradient(135deg, #ff3d5a, #6a0dad); color: white; }
+
+
+  .order-status-container select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: border 0.3s ease;
+  }
+  .order-status-container select:hover {
+    border: 1px solid #3498db;
+  }
+
+  .order-status-container button {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .order-status-container button:hover {
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+  }
+
+  /* Alert Box */
+  .alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #27ae60, #1e8449);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    display: none;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 9999;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  .alert.error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .sidebar {
+      width: 100%;
+    }
+    .top-header {
+      flex-direction: column;
+      text-align: center;
+    }
+    .profile {
+      margin-top: 10px;
+    }
+    .order-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .order-status-container {
+      text-align: left;
+      margin-top: 10px;
+    }
+  }
+
+  .popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 1000;
+    width: 300px;
+  }
+  .popup img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+  .popup h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  .popup p {
+    font-size: 14px;
+    color: #555;
+  }
+  .popup .close-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .popup .close-btn:hover {
+    background: #c0392b;
+  }
+
+  /* Dark Background Overlay */
+  .overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  @media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #2c3e50;
+    z-index: 1000;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .sidebar-header img {
+    width: 140px;
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .sidebar-nav ul li {
+    margin-right: 15px;
+    margin-bottom: 10px;
+  }
+
+  .top-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .profile {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  .order-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .order-status-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .order-status-container select,
+  .order-status-container button {
+    width: 100%;
+    margin-top: 5px;
+  }
+
+  .popup {
+    width: 90%;
+  }
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="images/logo3white.png" alt="Skyline Shopper Logo" />
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="admin-dashboard.html">Dashboard</a></li>
+          <li><a href="invoice.html">Invoice</a></li>
+          <!-- <li><a href="#">Products</a></li>
+          <li><a href="#">Customers</a></li> -->
+          <li><a href="#" onclick="downloadPDF()">Download Orders PDF</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-header">
+        <h1>Admin Panel | Skyline Shopper</h1>
+        <div class="profile">
+          <span>Welcome,<b>Patel Prince</b></span>
+          <img src="images/prince.jpg" alt="Profile Picture" onclick="openProfilePopup()" style="cursor: pointer;" />
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="table-header">Orders</div>
+        
+        <div id="ordersContainer"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="alert" class="alert"></div>
+
+
+  <div class="overlay" id="overlay" onclick="closeProfilePopup()"></div>
+  <div class="popup" id="profilePopup">
+    <img src="images/prince.jpg" alt="User Profile" />
+    <h2>Patel Prince</h2>
+    <p>Email: patelprince4099@gmail.com</p>
+    <p>Role: Admin</p>
+    <p>Contact: +91 6359700326</p>
+  </div>
+  <script>
+    const socket = io('http://localhost:3000');
+    const alertBox = document.getElementById('alert');
+    const ordersContainer = document.getElementById('ordersContainer');
+    let ordersData = [];
+
+    document.addEventListener('DOMContentLoaded', fetchOrders);
+
+    async function fetchOrders() {
+      try {
+        const response = await fetch('http://localhost:3000/getOrders');
+        const data = await response.json();
+        if (data.success) {
+          ordersData = data.orders;
+          renderOrders(data.orders);
+        } else {
+          showAlert("Failed to fetch orders", "error");
+        }
+      } catch (error) {
+        showAlert("Error fetching orders: " + error, "error");
+      }
+    }
+
+    function renderOrders(orders) {
+    ordersContainer.innerHTML = '';
+    
+    orders.forEach(order => {
+      // Fix status class names (replace spaces with dashes)
+      const statusClass = order.orderStatus.replace(/\s+/g, '-'); 
+
+      const card = document.createElement('div');
+      card.classList.add('order-card');
+
+      card.innerHTML = `
+        <div class="order-details">
+          <h3>Order ID: ${order.orderID}</h3>
+          <p><strong>User ID:</strong> ${order.userID}</p>
+          <p><strong>Total:</strong> ₹${order.totalAmount.toFixed(2)}</p>
+          <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+          <p><strong>Order Date:</strong> ${order.orderDate}</p>
+        </div>
+        <div class="order-status-container">
+          <span class="status ${statusClass}">${order.orderStatus}</span>
+          <div>
+            <select id="status-${order.orderID}">
+              <option value="Ordered" ${order.orderStatus === 'Ordered' ? 'selected' : ''}>Ordered</option>
+              <option value="Processing" ${order.orderStatus === 'Processing' ? 'selected' : ''}>Processing</option>
+              <option value="Shipped" ${order.orderStatus === 'Shipped' ? 'selected' : ''}>Shipped</option>
+              <option value="Out For Delivery" ${order.orderStatus === 'Out For Delivery' ? 'selected' : ''}>Out For Delivery</option>
+              <option value="Delivered" ${order.orderStatus === 'Delivered' ? 'selected' : ''}>Delivered</option>
+            </select>
+            <button onclick="updateOrderStatus('${order.orderID}')">Update</button>
+          </div>
+        </div>
+      `;
+      
+      ordersContainer.appendChild(card);
+    });
+  }
+
+
+    async function updateOrderStatus(orderId) {
+      const newStatus = document.getElementById(`status-${orderId}`).value;
+      try {
+        const response = await fetch('http://localhost:3000/updateOrderStatus', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId, newStatus })
+        });
+        const data = await response.json();
+        if (data.success) {
+          showAlert(`Order ${orderId} updated to ${newStatus}`, "success");
+        } else {
+          showAlert(`Failed to update order: ${data.message}`, "error");
+        }
+      } catch (error) {
+        showAlert("Error updating order status: " + error, "error");
+      }
+    }
+
+    function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Logo settings
+    const logo = new Image();
+    logo.src = 'https://i.imgur.com/211cbL7.jpg'; // Replace with actual URL or Base64
+
+    logo.onload = function () {
+        const imgWidth = 50; // Adjust width
+        const imgHeight = 20; // Adjust height
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const centerX = (pageWidth - imgWidth) / 2;
+
+        // Add logo at the top center
+        doc.addImage(logo, 'PNG', centerX, 10, imgWidth, imgHeight);
+
+        // Add title below the logo
+        doc.setFont("times", "bold");
+        doc.setFontSize(16);
+        doc.text("Skyline Shopper - Orders Report", pageWidth / 2, 35, { align: "center" });
+
+        // Get current date and time
+        const now = new Date();
+        const formattedDate = now.toLocaleString();
+
+        // Add date & time below the title
+        doc.setFont("times", "normal");
+        doc.setFontSize(12);
+        doc.text(`Generated on: ${formattedDate}`, pageWidth / 2, 42, { align: "center" });
+
+        // Table Headers & Data
+        const tableColumn = ["Order ID", "User ID", "Total ($)", "Payment Method", "Order Date", "Status"];
+        const tableRows = ordersData.map(order => [
+            order.orderID, order.userID, `$ ${order.totalAmount.toFixed(2)}`, order.paymentMethod, order.orderDate, order.orderStatus
+        ]);
+
+        // Generate Table
+        doc.autoTable({ head: [tableColumn], body: tableRows, startY: 50 ,headStyles: { fillColor: [18, 18 , 17], textColor: [255, 255, 255], fontStyle: 'bold' } });
+
+        // Add timestamp at the bottom right corner
+        doc.setFontSize(10);
+        doc.text(`Generated on: ${formattedDate}`, pageWidth - 10, pageHeight - 10, { align: "right" });
+
+        // Save PDF
+        doc.save("Orders_Skyline.pdf");
+    };
+}
+
+
+
+    function showAlert(message, type) {
+      alertBox.textContent = message;
+      alertBox.className = `alert ${type}`;
+      alertBox.style.display = "block";
+      setTimeout(() => {
+        alertBox.style.display = "none";
+      }, 5000);
+    }
+
+    socket.on('newOrder', (order) => {
+      showAlert(`New order received: ${order.orderID}`, "success");
+      fetchOrders();
+    });
+
+    socket.on('orderStatusUpdated', (data) => {
+      showAlert(`Order ${data.orderID} is now ${data.newStatus}`, "success");
+      fetchOrders();
+    });
+  </script>
+  <script>
+    function openProfilePopup() {
+      document.getElementById("profilePopup").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+    }
+
+    function closeProfilePopup() {
+      document.getElementById("profilePopup").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }
+  </script>
+</body>
+</html>

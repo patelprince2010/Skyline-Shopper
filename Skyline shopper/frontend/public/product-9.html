@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products | Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="website icon" type="png " href="images/logo2 - Copy.png">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo2.png" width="300px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="account.html">Account</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+
+    <!---single product details-->
+
+    <div class="small-container single-product">
+        <div class="row">
+            <div class="col-2">
+                <img src="images/product-9.png" width="100%" id="ProductImg">
+
+                <div class="small-img-row">
+                    <div class="small-img-col">
+                        <img src="images/product-9.png" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="images/gallery-9-1.png" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="images/gallery-9-2.png" width="100%" class="small-img">
+                    </div>
+                    <div class="small-img-col">
+                        <img src="images/gallery-9-3.png" width="100%" class="small-img">
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <p>Home / Shoes</p>
+                <h1>Nike Air Force 1'07</h1>
+                <h4>₹10999</h4>
+                <select>
+                    <option>Select Size</option>
+                    <option>UK-06</option>
+                    <option>UK-07</option>
+                    <option>UK-08</option>
+                    <option>UK-09</option>
+                    <option>UK-10</option>
+                </select>
+                <input type="number" value="1">
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Air Force 1,07', 10999,'images/product-9.png')">Add to Cart</button>
+                <br>
+                <button class="share-btn" onclick="shareProduct('Nike Air Force 1,07')">
+                    <i class="fa fa-share"></i> Share
+                </button>
+                <h3>Product Details <i class="fa fa-indent" ></i></h3>
+                <br>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores quo ratione quia, magnam odio expedita labore dicta excepturi aliquam blanditii</p>
+
+            </div>
+        </div>
+    </div>
+
+    
+<!--title-->
+    <div class="small-container">
+        <div class="row row-2">
+            <h2>Related Products</h2>
+            <p>View More</p>
+        </div>
+    </div>
+    <div class="small-container">
+        
+
+        <div class="row">
+            <div class="col-4">
+                <a href="product-10.html"><img src="images/product-10.png"></a>
+                <a href="product-10.html"><h4>Nike Air Max Nuaxis Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹8999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Air Max Nuaxis Shoes', 8999,'images/product-10.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-11.html"><img src="images/product-11.png"></a>
+                <a href="product-11.html"><h4>Nike Invincible 3 Mens Shoes </h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <p>₹16999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Invincible 3 Mens Shoes', 16999,'images/product-11.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-details.html"><img src="images/product-1.png"></a> 
+                <a href="product-details.html"><h4>Nike Revolution Running Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>₹3699</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Revolution Running Shoes', 3699,'images/product-1.png')">Add to Cart</button>
+            </div>
+            <div class="col-4">
+                <a href="product-12.html"><img src="images/product-12.png"></a>
+                <a href="product-12.html"><h4>Nike Killshot 2 Leather Shoes</h4></a>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-half-o"></i>
+                </div>
+                <p>₹8999</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Nike Killshot 2 Leather Shoes', 8999,'images/product-12.png')">Add to Cart</button>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App For Android and Ios Mobile Phone.</p>
+                    <div class="app-logo">
+                        <a href="https://play.google.com/store" target="_blank">
+                            <img src="images/play-store.png">
+                        </a>
+                        <a href="https://www.apple.com/app-store/" target="_blank">
+                            <img src="images/app-store.png" alt="App Store">
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="images/logo3white.png">
+                    <p>Our Purpose is to sustainably Make the pleasure and benifits of sports accessible to the many.</p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="">Coupons</a></li>
+                        <li><a href="">Blog Post</a></li>
+                        <li><a href="">Return Policy</a></li>
+                        <li><a href="">Join Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                        <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                        <li><a href="https://www.instagram.com/_prince_ptl__/" target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    function menutoggle() {
+        let menu = document.getElementById('MenuItems');
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+        } else {
+            menu.style.display = "block";
+        }
+    }
+});
+
+function menutoggle() {
+            let menu = document.getElementById('MenuItems');
+            menu.classList.toggle('show'); // Toggle the 'show' class
+        }
+    </script>
+
+    <!---js for product gallery-->
+
+    <script>
+        var ProductImg = document.getElementById("ProductImg");
+        var SmallImg = document.getElementsByClassName("small-img");
+
+            SmallImg[0].onclick = function(){
+                ProductImg.src = SmallImg[0].src;
+            }
+            SmallImg[1].onclick = function(){
+                ProductImg.src = SmallImg[1].src;
+            }
+            SmallImg[2].onclick = function(){
+                ProductImg.src = SmallImg[2].src;
+            }
+            SmallImg[3].onclick = function(){
+                ProductImg.src = SmallImg[3].src;
+            }
+
+            function addToCart(productName, productPrice, productImage) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const productIndex = cart.findIndex(item => item.name === productName);
+
+            if (productIndex > -1) {
+                // If the product is already in the cart, increase the quantity
+                cart[productIndex].quantity += 1;
+            } else {
+                // If the product is not in the cart, add it
+                cart.push({
+                    name: productName,
+                    price: productPrice,
+                    quantity: 1,
+                    image: productImage // Store the image URL
+                });
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${productName} has been added to the cart!`);
+        }
+
+        function shareProduct(productName, productPage) {
+        const url = window.location.href;
+        if (navigator.share) {
+            navigator.share({
+                title: productName,
+                url: url
+            }).then(() => console.log('Thanks for sharing!'))
+            .catch(console.error);
+        } else {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('${productName} link copied to clipboard!');
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+    }
+    document.addEventListener("contextmenu", function (event) {
+    if (event.target.tagName === "IMG") {
+        event.preventDefault();
+    }
+});
+    </script>
+</body>
+</html>

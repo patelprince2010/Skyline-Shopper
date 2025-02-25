@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Checkout Page Styles */
+.checkout-page {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.checkout-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Checkout Details Section */
+.checkout-details {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Cart Summary Styles */
+.cart-summary {
+    flex: 1;
+    margin-right: 20px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cart-summary img {
+    border-radius: 8px; /* Matches the global radius or can be customized */
+    object-fit: cover; /* Ensures the image scales properly inside the container */
+}
+.cart-summary h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+#cart-summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#cart-summary-table th, #cart-summary-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#cart-summary-table th {
+    background-color: #ff523b;
+    font-weight: 600;
+}
+
+.grand-total-display {
+    margin-top: 20px;
+    border-top: 2px solid #ddd;
+    padding-top: 10px;
+}
+
+.grand-total-display h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.grand-total-display table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grand-total-display table td {
+    padding: 10px;
+    text-align: right;
+    font-size: 1rem;
+}
+
+.grand-total-display table td:first-child {
+    text-align: left;
+}
+
+/* Billing Information Styles */
+.billing-info {
+    flex: 1;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.billing-info h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-section {
+    margin-bottom: 20px;
+}
+
+.form-section label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    display: block;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo2.png" width="300px"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="account.html">Account</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()">
+        </div>
+    </div>
+
+   <!-- Checkout Form -->
+   <div class="checkout-page">
+    <h1>Checkout</h1>
+    <div class="checkout-details">
+        <!-- Cart Summary Section -->
+        <div class="cart-summary">
+            <h2>Cart Summary</h2>
+            <table id="cart-summary-table">
+                <thead>
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Cart items will be dynamically populated here -->
+                </tbody>
+            </table>
+            <div class="grand-total-display">
+                <h2>Summary</h2>
+                <table>
+                    <tr>
+                        <td>Discount</td>
+                        <td id="discount-amount">₹0.00</td>
+                    </tr>
+                    <tr>
+                        <td>Grand Total</td>
+                        <td id="grand-total-amount">₹0.00</td>
+                    </tr>
+                </table>
+            </div>
+            
+        </div>
+
+        <!-- Billing Form Section -->
+        <div class="billing-info">
+            <h2>Billing Information</h2>
+            <form id="billing-form">
+                <div class="personal-info">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="shipping-address">
+                    <label for="address">Shipping Address</label>
+                    <input type="text" id="address" name="address" placeholder="Enter your address" required>
+
+                    <label for="phone">Phone Number</label>
+                    <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required>
+                </div>
+
+                <div class="place-order-container">
+                    <button type="submit" class="place-order-button">Place Order</button>
+                </div>                
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="footer-col-1">
+                        <h3>Download Our App</h3>
+                        <p>Download App For Android and iOS Mobile Phones.</p>
+                        <div class="app-logo">
+                            <a href="https://play.google.com/store" target="_blank">
+                                <img src="images/play-store.png">
+                            </a>
+                            <a href="https://www.apple.com/app-store/" target="_blank">
+                                <img src="images/app-store.png" alt="App Store">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-col-2">
+                        <img src="images/logo3white.png">
+                        <p>Our Purpose is to sustainably make the pleasure and benefits of sports accessible to the many.</p>
+                    </div>
+                    <div class="footer-col-3">
+                        <h3>Useful Links</h3>
+                        <ul>
+                            <li>Coupons</li>
+                            <li>Blog Post</li>
+                            <li>Return Policy</li>
+                            <li>Join Affiliate</li>
+                        </ul>
+                    </div>
+                    <div class="footer-col-3">
+                        <h3>Follow Us</h3>
+                        <ul>
+                            <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                            <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                            <li><a href="https://www.instagram.com" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let couponApplied = false;
+
+    // Load Cart Items and Summary for Checkout
+    function loadCartItemsForCheckout() {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartTable = document.getElementById("cart-summary-table").getElementsByTagName("tbody")[0];
+        cartTable.innerHTML = ""; // Clear existing rows to prevent duplicates
+
+        let subtotalAmount = 0;
+
+        cart.forEach(item => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><img src="${item.image}" alt="${item.name}" width="50" height="50" style="object-fit: cover;"></td>
+                <td>${item.name}</td>
+                <td>${item.quantity}</td>
+                <td>₹${(item.price * item.quantity).toFixed(2)}</td>
+            `;
+            cartTable.appendChild(row);
+            subtotalAmount += item.price * item.quantity;
+        });
+
+        const discountAmount = parseFloat(localStorage.getItem("discount")) || 0;
+        const finalTotal = parseFloat(localStorage.getItem("grandTotal")) || subtotalAmount;
+        const taxableAmount = subtotalAmount - discountAmount;
+        const taxAmount = taxableAmount * 0.18; // 18% tax
+
+        // Update totals in the DOM
+        document.getElementById("grand-total-amount").textContent = `₹${finalTotal.toFixed(2)}`;
+        document.getElementById("subtotal-amount").textContent = `₹${subtotalAmount.toFixed(2)}`;
+        document.getElementById("tax-amount").textContent = `₹${taxAmount.toFixed(2)}`;
+        document.getElementById("discount-amount").textContent = `₹${discountAmount.toFixed(2)}`;
+    }
+
+    // Check Coupon Code
+    function checkCouponCode() {
+        const couponCode = localStorage.getItem("couponCode");
+        couponApplied = couponCode === "PATEL50"; // Set coupon status
+    }
+
+    // Initialize EmailJS
+    emailjs.init("z6w09G7V1idyw7ULh");
+
+    // Send Email Function
+    function sendEmail(userDetails, cartItems, grandTotal) {
+        console.log("User Details:", userDetails);
+        console.log("Cart Items:", cartItems);
+        console.log("Grand Total:", grandTotal);
+
+        const emailData = {
+            to_email: userDetails.email,
+            name: userDetails.name,
+            email: userDetails.email,
+            address: userDetails.address,
+            phone: userDetails.phone,
+            items: cartItems.map(item => `✔️ ${item.name} (Qty: ${item.quantity})`).join("\n"),
+            total: `₹${grandTotal.toFixed(2)}`,
+            order_date: new Date().toLocaleDateString()
+        };
+
+        console.log("Email Data:", emailData); // Debugging
+
+        return emailjs.send('service_jwq4o5g', 'template_34b9q9m', emailData)
+            .then(function(response) {
+                console.log("✅ Email sent successfully", response);
+                alert("Order confirmation has been sent to your email!");
+                window.location.href = "payment.html"; // Redirect only after email is sent
+            })
+            .catch(function(error) {
+                console.error("❌ Error sending email:", error);
+                alert("Failed to send order details. Please check your email and try again.");
+            });
+    }
+
+    // Billing Form Submit Handler
+    document.getElementById("billing-form").addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const grandTotal = parseFloat(document.getElementById("grand-total-amount").textContent.replace("₹", ""));
+        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Retrieve user details
+        const userBillingDetails = {
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            phone: document.getElementById("phone").value.trim()
+        };
+
+        // Validate Input Fields
+        if (!userBillingDetails.name || !userBillingDetails.email || !userBillingDetails.address || !userBillingDetails.phone) {
+            alert("❌ Please fill in all required fields.");
+            return;
+        }
+
+        // Store Data in LocalStorage
+        localStorage.setItem("grandTotal", grandTotal.toFixed(2));
+        localStorage.setItem("orderDetails", JSON.stringify(cartItems));
+        localStorage.setItem("userBillingDetails", JSON.stringify(userBillingDetails));
+
+        // Send Email and then redirect
+        sendEmail(userBillingDetails, cartItems, grandTotal);
+    });
+
+    // Load data when page loads
+    checkCouponCode();
+    loadCartItemsForCheckout();
+});
+</script>
+   
+</body>
+</html>

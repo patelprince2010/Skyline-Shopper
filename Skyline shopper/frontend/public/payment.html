@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | Skyline Shopper</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script> 
+    <link rel="website icon" type="png " href="images/logo2 - Copy.png"><!-- QR Code library -->
+    <style>
+        /* General styling */
+
+/* Payment Page Specific Styles */
+.payment-page {
+    text-align: center;
+    margin-top: 40px;
+}
+
+
+.payment-page h1 {
+    font-size: 36px; /* Larger font size for main heading */
+    margin-bottom: 20px; /* Add spacing below the heading */
+    color: #ff532b;
+}
+
+.payment-container h2 {
+    font-size: 28px; /* Larger font size for section headings */
+    margin-bottom: 10px; /* Add spacing below the heading */
+    color: #ff532b;
+}
+
+.payment-container h3 {
+    font-size: 24px; /* Increase size for smaller headings */
+    margin-bottom: 10px;
+}
+
+.payment-container p {
+    font-size: 18px; /* General text font size */
+}
+
+
+
+.payment-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.order-summary,
+.payment-options {
+    width: 80%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: radial-gradient(#fff #c9e5f2);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    text-align: center; /* Ensures text alignment is left inside the container */
+    font-weight: bold;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the start (left) */
+}
+
+.payment-method-list {
+    list-style-type: disc; /* Adds bullet points */
+    padding-left: 20px; /* Indents the list */
+    margin-top: 15px; /* Adds some spacing from the heading */
+    width: 100%;
+}
+
+.payment-method-container {
+    width: 80%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: radial-gradient(#fff #c9e5f2);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+    display: none; /* Initially hidden */
+}
+
+
+.payment-method-list li {
+    margin-bottom: 10px; /* Space between each option */
+    display: flex;
+    align-items: center;
+    font-size: 28px;
+}
+
+.payment-method-list input[type="radio"] {
+    margin-right: 10px; /* Space between bullet point and label */
+}
+
+.payment-method {
+    display: none;
+}
+
+#order-details {
+    font-size: 25px; /* Font size for order details */
+}
+
+#order-total {
+    font-size: 30px; /* Emphasize grand total */
+    font-weight: bold; /* Make it stand out */
+}
+
+
+label {
+    font-size: 18px; /* Font size for form labels */
+}
+
+.upi-qr {
+    display: none;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#upi-qr-code {
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: radial-gradient(#fff #c9e5f2);
+}
+
+
+/* Button Styling */
+.pay-button {
+    display: inline-block;
+    background: #ff532b; /* Soft blue */
+    color: #fff;
+    padding: 8px 20px; /* Reduced padding */
+    border-radius: 5px;
+    font-size: 18px; /* Smaller font size */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px; /* Space from the upper side */
+    border: none;
+}
+
+.pay-button:hover {
+    background-color: #387f9b; /* Darker blue on hover */
+}
+
+
+
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <a href="index.html"><img src="images/logo2.png" width="300px" alt="Skyline Shopper"></a>
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="account.html">Account</a></li>
+                </ul>
+            </nav>
+            <a href="cart.html"><img src="images/cart.png" width="30px" height="30px" alt="Cart"></a>
+            <img src="images/menu.png" class="menu-icon" onclick="menutoggle()" alt="Menu">
+        </div>
+    </div>
+
+    <div class="payment-page">
+        <h1>Payment</h1>
+    
+        <!-- Order Summary -->
+        <div class="payment-container">
+            <div class="order-summary">
+                <h2>Order Summary</h2><br>
+                <p id="order-details"></p><br>
+                <h3>Grand Total: ₹<span id="order-total"></span></h3>
+            </div>
+    
+            <!-- Payment Options -->
+           <!-- Payment Options -->
+<div class="payment-options">
+    <h2>Select Payment Method</h2>
+    <ul class="payment-method-list">
+        <li>
+            <input type="radio" name="payment-method" id="credit-card" onclick="showPaymentMethod('credit-card')">
+            <label for="credit-card">Credit Card / Debit Card</label>
+        </li>
+        <li>
+            <input type="radio" name="payment-method" id="net-banking" onclick="showPaymentMethod('net-banking')">
+            <label for="net-banking">Net Banking</label>
+        </li>
+        <li>
+            <input type="radio" name="payment-method" id="upi" onclick="showPaymentMethod('upi')">
+            <label for="upi">UPI</label>
+        </li>
+        <li>
+            <input type="radio" name="payment-method" id="cod" onclick="showPaymentMethod('cod')">
+            <label for="cod">Cash on Delivery (COD)</label>
+        </li>
+    </ul>
+</div>
+
+<!-- Cash on Delivery Container -->
+<div class="payment-method-container" id="cod-container">
+    <h3>Cash on Delivery</h3>
+    <p>You can pay in cash when your order is delivered. Please ensure you have the exact amount ready.</p>
+    <button class="pay-button" onclick="confirmCOD()">Confirm Order with COD</button>
+</div>
+
+            
+    <!-- Credit Card/Debit Card Container -->
+            <div class="payment-method-container" id="credit-card-container">
+                <h3>Credit/Debit Card Payment</h3><br>
+                <label for="card-number">Card Number</label>
+                <input type="number" id="card-number" placeholder="Enter card number" maxlength="16" required><br><br>
+                <label for="card-expiry">Expiry Date</label>
+                <input type="text" id="card-expiry" placeholder="MM/YY" required><br><br>
+                <label for="card-cvc">CVC</label>
+                <input type="number" id="card-cvc" placeholder="CVC" maxlength="3"><br><br>
+                <button class="pay-button">Pay with Credit Card</button>
+            </div>
+
+            <!-- Net Banking Container -->
+            <div class="payment-method-container" id="net-banking-container">
+                <h3>Net Banking Payment</h3><br>
+                <label for="bank-name">Select Bank</label>
+                <select id="bank-name">
+                    <option>Select Bank</option>
+                    <option>STATE BANK OF INDIA</option>
+                    <option>HDFC BANK</option>
+                    <option>UNION BANK OF INDIA</option>
+                    <option>BANK OF INDIA</option>
+                    <option>IDFC BANK</option>
+                    <option>AXIS BANK</option>
+                    <option>BANK OF BARODA</option>
+                </select>
+                <button class="pay-button">Pay with Net Banking</button>
+            </div>
+
+
+            <div class="payment-method-container" id="upi-container">
+                <h3>UPI Payment</h3>
+                <p>Scan the UPI QR code to complete your payment.</p>
+                <canvas id="upi-qr-code"></canvas>
+                <p>Scan with your UPI app to pay.</p>
+                <!-- Added Timer Element -->
+            </div>
+            
+            <div class="payment-method-container" id="net-banking-container">
+                <h3>Net Banking Payment</h3><br>
+                <label for="bank-name">Select Bank</label>
+                <select id="bank-name">
+                    <option>Select Bank</option>
+                    <option>STATE BANK OF INDIA</option>
+                    <option>HDFC BANK</option>
+                    <option>UNION BANK OF INDIA</option>
+                    <option>BANK OF INDIA</option>
+                    <option>IDFC BANK</option>
+                    <option>AXIS BANK</option>
+                    <option>BANK OF BARODA</option>
+                </select>
+                <button class="pay-button">Pay with Net Banking</button>
+            </div>
+
+            <script>
+            // Function to toggle the menu display
+function menutoggle() {
+    let menu = document.getElementById('MenuItems');
+    menu.classList.toggle('show'); // Toggle the 'show' class
+}
+
+// Function to generate a unique Order ID
+function generateOrderID() {
+    const timestamp = Date.now().toString(); // Current timestamp
+    const randomNumber = Math.floor(1000 + Math.random() * 9000).toString(); // 4-digit random number
+    return `ORDER${timestamp}${randomNumber}`; // Unique Order ID
+}
+
+// Function to display the selected payment method's container
+function showPaymentMethod(method) {
+    const methods = ['credit-card', 'net-banking', 'upi', 'cod'];
+
+    methods.forEach(item => {
+        const container = document.getElementById(`${item}-container`);
+        if (container) {
+            container.style.display = item === method ? 'block' : 'none';
+        }
+    });
+
+    if (method === 'upi') {
+        generateUPICode(); // Generate UPI QR Code
+    }
+}
+
+// Function to generate a UPI QR Code
+function generateUPICode() {
+    const upiID = "patelprince4099@okicici"; // UPI ID
+    const amount = localStorage.getItem('grandTotal') || "0.00"; // Fetch the total amount from localStorage
+    const name = "Skyline Shopper"; // Merchant name
+
+    // Construct the UPI URI
+    const upiURI = `upi://pay?pa=${encodeURIComponent(upiID)}&pn=${encodeURIComponent(name)}&am=${encodeURIComponent(amount)}&cu=INR`;
+
+    // Generate the QR code
+    const qrCanvas = document.getElementById("upi-qr-code");
+
+    QRCode.toCanvas(qrCanvas, upiURI, { width: 200 }, function (error) {
+        if (error) {
+            console.error("Error generating QR code:", error);
+            alert("Unable to generate UPI QR code. Please try again.");
+        } else {
+            console.log("QR code generated successfully.");
+        }
+    });
+}
+
+// Function to handle payment processing
+async function processPayment() {
+    const paymentMethod = document.querySelector('input[name="payment-method"]:checked')?.id;
+
+    if (!paymentMethod) {
+        alert("Please select a payment method.");
+        return;
+    }
+
+    if (paymentMethod === "credit-card") {
+        const cardNumber = document.getElementById("card-number").value;
+        const cardExpiry = document.getElementById("card-expiry").value;
+        const cardCVC = document.getElementById("card-cvc").value;
+
+        if (!cardNumber || cardNumber.length < 13 || cardNumber.length > 19) {
+            alert("Please enter a valid card number.");
+            return;
+        }
+
+        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry)) {
+            alert("Please enter a valid expiry date in MM/YY format.");
+            return;
+        }
+
+        if (!/^\d{3,6}$/.test(cardCVC)) {
+            alert("CVV must be 3 to 6 digits long.");
+            return;
+        }
+    } else if (paymentMethod === "net-banking") {
+        const selectedBank = document.getElementById("bank-name").value;
+        if (selectedBank === "Select Bank") {
+            alert("Please select your bank for Net Banking.");
+            return;
+        }
+    }
+
+    const orderDetails = JSON.parse(localStorage.getItem('orderDetails')) || [];
+    const totalAmount = parseFloat(localStorage.getItem('grandTotal')) || 0.0;
+
+    if (orderDetails.length === 0 || totalAmount === 0) {
+        alert("Order details are missing or incorrect. Please complete the cart.");
+        return;
+    }
+
+    const orderID = generateOrderID(); // Generate Order ID
+    const orderData = {
+        orderID,
+        userID: 'PRINCE PATEL', // Replace with actual user ID
+        items: orderDetails,
+        totalAmount,
+        paymentMethod,
+        paymentStatus: 'Success',
+    };
+
+    try {
+        const response = await fetch('http://localhost:3000/saveOrder', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log(result);
+        
+        // Store the Order ID in local storage
+        localStorage.setItem('currentOrderID', orderID);
+        
+        alert(`Payment Successful! Your Order ID is: ${orderID}. Use it to track your order.`);
+        // window.location.href = "order-tracking.html";
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert(`Error processing payment: ${error.message}`);
+    }
+}
+
+// Function to handle COD confirmation
+function confirmCOD() {
+    const orderDetails = JSON.parse(localStorage.getItem('orderDetails')) || [];
+    const totalAmount = parseFloat(localStorage.getItem('grandTotal')) || 0.0;
+
+    if (orderDetails.length === 0 || totalAmount === 0) {
+        alert("Order details are missing or incorrect. Please complete the cart.");
+        return;
+    }
+
+    const orderID = generateOrderID(); // Generate Order ID
+    const orderData = {
+        orderID,
+        userID: 'PRINCE PATEL', // Replace with actual user ID
+        items: orderDetails,
+        totalAmount,
+        paymentMethod: 'Cash on Delivery',
+        paymentStatus: 'Pending',
+    };
+
+    // Save order details locally or send to server
+    console.log(orderData);
+    localStorage.setItem('currentOrderID', orderID);
+    
+    // alert(`Order confirmed! Your Order ID is: ${orderID}. Please prepare ₹${totalAmount} for payment on delivery.`);
+    
+}
+
+// Display order details and total
+const orderDetails = JSON.parse(localStorage.getItem('orderDetails')) || [];
+const orderTotal = localStorage.getItem('grandTotal') || "0.00";
+
+document.getElementById('order-details').innerHTML = orderDetails.map(item =>
+    `<p>${item.name} - ${item.quantity} x ₹${item.price}</p>`
+).join('');
+document.getElementById('order-total').textContent = orderTotal;
+
+// Attach event listeners to the buttons
+document.querySelectorAll('.pay-button').forEach(button => {
+    button.addEventListener('click', processPayment);
+});
+
+</script>         
+
+            <br>
+            <br>
+    <footer>
+        <div class="footer">
+           
+                <div class="row">
+                    <div class="footer-col-1">
+                        <h3>Download Our App</h3>
+                        <p>Download App For Android and iOS Mobile Phones.</p>
+                        <div class="app-logo">
+                            <a href="https://play.google.com/store" target="_blank">
+                                <img src="images/play-store.png" alt="Play Store">
+                            </a>
+                            <a href="https://www.apple.com/app-store/" target="_blank">
+                                <img src="images/app-store.png" alt="App Store">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="footer-col-2">
+                        <img src="images/logo3white.png" alt="Skyline Shopper Logo">
+                        <p>Our Purpose is to sustainably make the pleasure and benefits of sports accessible to the many.</p>
+                    </div>
+                    <div class="footer-col-3">
+                        <h3>Useful Links</h3>
+                        <ul>
+                            <li><a href="">Coupons</a></li>
+                            <li><a href="">Blog Post</a></li>
+                            <li><a href="">Return Policy</a></li>
+                            <li><a href="">Join Affiliate</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-col-3">
+                        <h3>Follow Us</h3>
+                        <ul>
+                            <li><a href="https://www.facebook.com" target="_blank">Facebook</a></li>
+                            <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                            <li><a href="https://www.instagram.com/_prince_ptl__/" target="_blank">Instagram</a></li>
+                            <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <p class="copyright">Copyright 2024 - Skyline Shopper</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
